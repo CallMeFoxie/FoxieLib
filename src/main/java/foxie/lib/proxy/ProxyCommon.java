@@ -3,6 +3,7 @@ package foxie.lib.proxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class ProxyCommon {
    public void preinit(FMLPreInitializationEvent event) {
@@ -15,5 +16,9 @@ public class ProxyCommon {
 
    public void postinit(FMLPostInitializationEvent event) {
 
+   }
+
+   public EntityPlayer getPlayer() {
+      return null;
    }
 }
