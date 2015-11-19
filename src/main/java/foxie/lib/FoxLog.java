@@ -16,6 +16,7 @@ public class FoxLog {
    }
 
    public static void notAFoxie() {
+      error("    Fake Foxie detected! This is not a proper Foxie!");
       error("<-- just tried working with a mod that uses FoxieLib but does not implement IFoxieMod!");
       error("    report this to the author of given mod, please. Thanks!");
    }

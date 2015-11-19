@@ -4,11 +4,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -16,21 +14,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class Registrator {
-   public static void registerBlock(Block block) {
+   public static void registerBlock(FoxyBlock block) {
       GameRegistry.registerBlock(block, Things.getCurrentModId() + "_" + block.getUnlocalizedName().substring(5));
       checkForEvents(block);
    }
 
-   public static void registerItem(Item item) {
+   public static void registerItem(FoxyItem item) {
       GameRegistry.registerItem(item, Things.getCurrentModId() + "_" + item.getUnlocalizedName().substring(5));
       checkForEvents(item);
    }
 
-   public static void registerMultiBlock(Block block, Class<? extends ItemBlock> myClass) {
+   public static void registerMultiBlock(FoxyBlock block, Class<? extends ItemBlock> myClass) {
       GameRegistry.registerBlock(block, myClass, Things.getCurrentModId() + "_" + block.getUnlocalizedName().substring(5));
    }
 
-   public static void registerTileEntity(Class<? extends TileEntity> te, String unlocalizedName) {
+   public static void registerTileEntity(Class<? extends FoxyTileEntity> te, String unlocalizedName) {
       GameRegistry.registerTileEntity(te, Things.getCurrentModId() + "_" + unlocalizedName);
       checkForEvents(te);
    }
