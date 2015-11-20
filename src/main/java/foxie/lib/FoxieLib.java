@@ -11,7 +11,6 @@ import foxie.lib.proxy.ProxyCommon;
 public class FoxieLib implements IFoxieMod {
    public static final String MODID   = "foxielib";
    public static final String NAME    = "Foxie Lib";
-   public static final String AUTHOR  = "CallMeFoxie";
    public static final String VERSION = "@VERSION@";
 
    @SidedProxy(clientSide = "foxie.lib.proxy.ProxyClient", serverSide = "foxie.lib.proxy.ProxyCommon")
