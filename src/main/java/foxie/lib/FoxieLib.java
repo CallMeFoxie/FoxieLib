@@ -7,22 +7,19 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import foxie.lib.proxy.ProxyCommon;
 
-@Mod(modid = FoxieLib.MODID, acceptableRemoteVersions = "*", name = FoxieLib.NAME, version = FoxieLib.VERSION)
+@Mod(modid = FoxieLib.MODID, name = FoxieLib.NAME, version = FoxieLib.VERSION)
 public class FoxieLib implements IFoxieMod {
-   public static final String MODID   = "foxielib";
+   public static final String MODID   = "FoxieLib";
    public static final String NAME    = "Foxie Lib";
    public static final String VERSION = "@VERSION@";
 
-   @SidedProxy(clientSide = "foxie.lib.proxy.ProxyClient", serverSide = "foxie.lib.proxy.ProxyCommon")
+   @SidedProxy(clientSide = "foxie.lib.proxy.ProxyClient", serverSide = "foxie.lib.proxy.ProxyCommon", modId = MODID)
    public static ProxyCommon proxy;
 
    @Mod.Instance(MODID)
    public static FoxieLib INSTANCE;
 
    private static Config config;
-
-   public FoxieLib() {
-   }
 
    @Mod.EventHandler
    public void preinit(FMLPreInitializationEvent event) {

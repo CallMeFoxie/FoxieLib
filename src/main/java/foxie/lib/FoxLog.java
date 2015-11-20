@@ -8,11 +8,11 @@ public class FoxLog {
    }
 
    public static void error(String msg) {
-      FMLLog.severe("[" + Things.getCurrentModId() + "]" + msg);
+      FMLLog.severe("[" + Things.getCurrentModId() + "] " + msg);
    }
 
    public static void info(String msg) {
-      FMLLog.severe("[" + Things.getCurrentModId() + "]" + msg);
+      FMLLog.severe("[" + Things.getCurrentModId() + "] " + msg);
    }
 
    public static void notAFoxie() {
