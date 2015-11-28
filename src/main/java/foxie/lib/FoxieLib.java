@@ -41,4 +41,9 @@ public class FoxieLib implements IFoxieMod {
    public Config getConfig() {
       return config;
    }
+
+   @Override
+   public String getModId() {
+      return MODID;
+   }
 }

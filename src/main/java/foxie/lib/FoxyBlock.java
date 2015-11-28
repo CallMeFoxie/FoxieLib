@@ -9,8 +9,15 @@ import net.minecraft.util.IIcon;
 
 public abstract class FoxyBlock extends Block {
 
+   private IFoxieMod modHandler;
+
    protected FoxyBlock(Material material) {
       super(material);
+      modHandler = Things.getCurrentMod();
+   }
+
+   public IFoxieMod getModHandler() {
+      return modHandler;
    }
 
    public void preinit() {
@@ -30,6 +37,6 @@ public abstract class FoxyBlock extends Block {
 
    @SideOnly(Side.CLIENT)
    public IIcon registerIcon(IIconRegister register, String name) {
-      return register.registerIcon(Things.getCurrentModId() + ":" + getUnlocalizedName().substring(5) + "_" + name);
+      return register.registerIcon(modHandler.getModId() + ":" + getUnlocalizedName().substring(5) + "_" + name);
    }
 }
