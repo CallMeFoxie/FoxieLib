@@ -66,91 +66,53 @@ public class BlockPos {
    }
 
    public BlockPos getLeft(int blocks) {
-      if (direction == ForgeDirection.EAST) {
-         return new BlockPos(x, y, z - blocks, direction);
-      }
-
-      if (direction == ForgeDirection.WEST) {
-         return new BlockPos(x, y, z + blocks, direction);
-      }
-
-      if (direction == ForgeDirection.NORTH) {
-         return new BlockPos(x - blocks, y, z, direction);
-      }
-
-      if (direction == ForgeDirection.SOUTH) {
-         return new BlockPos(x + blocks, y, z, direction);
-      }
-
-      return this;
+      return getRight(-blocks);
    }
 
    public BlockPos getRight(int blocks) {
-      if (direction == ForgeDirection.EAST) {
-         return new BlockPos(x, y, z + blocks, direction);
-      }
+      if (direction == ForgeDirection.EAST)
+         z += blocks;
 
-      if (direction == ForgeDirection.WEST) {
-         return new BlockPos(x, y, z - blocks, direction);
-      }
+      if (direction == ForgeDirection.WEST)
+         z -= blocks;
 
-      if (direction == ForgeDirection.NORTH) {
-         return new BlockPos(x + blocks, y, z, direction);
-      }
+      if (direction == ForgeDirection.NORTH)
+         x += blocks;
 
-      if (direction == ForgeDirection.SOUTH) {
-         return new BlockPos(x - blocks, y, z, direction);
-      }
+      if (direction == ForgeDirection.SOUTH)
+         x -= blocks;
 
       return this;
    }
 
    public BlockPos getFarther(int blocks) {
-      if (direction == ForgeDirection.EAST) {
-         return new BlockPos(x + blocks, y, z, direction);
-      }
-
-      if (direction == ForgeDirection.WEST) {
-         return new BlockPos(x - blocks, y, z, direction);
-      }
-
-      if (direction == ForgeDirection.NORTH) {
-         return new BlockPos(x, y, z - blocks, direction);
-      }
-
-      if (direction == ForgeDirection.SOUTH) {
-         return new BlockPos(x, y, z + blocks, direction);
-      }
-
-      return this;
+      return getCloser(-blocks);
    }
 
    public BlockPos getCloser(int blocks) {
-      if (direction == ForgeDirection.EAST) {
-         return new BlockPos(x - blocks, y, z, direction);
-      }
+      if (direction == ForgeDirection.EAST)
+         x -= blocks;
 
-      if (direction == ForgeDirection.WEST) {
-         return new BlockPos(x + blocks, y, z, direction);
-      }
+      if (direction == ForgeDirection.WEST)
+         x += blocks;
 
-      if (direction == ForgeDirection.NORTH) {
-         return new BlockPos(x, y, z + blocks, direction);
-      }
+      if (direction == ForgeDirection.NORTH)
+         z += blocks;
 
-      if (direction == ForgeDirection.SOUTH) {
-         return new BlockPos(x, y, z - blocks, direction);
-      }
+      if (direction == ForgeDirection.SOUTH)
+         z -= blocks;
 
       return this;
    }
 
    public BlockPos getBelow(int blocks) {
-      return new BlockPos(x, y - 1, z, direction);
+      y--;
+      return this;
    }
 
    public BlockPos getAbove(int blocks) {
-      return new BlockPos(x, y + 1, z, direction);
+      y++;
+      return this;
    }
 
    public BlockPos getLeft() {
