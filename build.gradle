@@ -28,7 +28,7 @@ configFile.withReader {
 
 def VersionBuild = 0
 if (System.getenv("BUILD_NUMBER") != null) {
-    buildver = System.getenv("BUILD_NUMBER")
+    def buildver = System.getenv("BUILD_NUMBER")
     VersionBuild = "-${buildver}"
 }
 
