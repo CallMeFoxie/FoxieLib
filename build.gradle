@@ -25,7 +25,14 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version = "${config.minecraft_version}-${config.mod_version}"
+
+def VersionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null) {
+    buildver = System.getenv("BUILD_NUMBER")
+    VersionBuild = "-${buildver}"
+}
+
+version = "${config.minecraft_version}-${config.mod_version}${VersionBuild}"
 group = "foxie.lib"
 archivesBaseName = "FoxieLib"
 
