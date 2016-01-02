@@ -80,14 +80,15 @@ public class FoxieSavedData extends WorldSavedData {
       tag.setTag("PlayerData", list);
    }
 
-   public void getPlayerData(EntityPlayer player, PlayerData prototype) {
+   // TODO cache to avoid the need for new() every so often
+   public void getPlayerData(EntityPlayer player, IPlayerData prototype) {
       if (savedData.containsKey(player.getUniqueID())) {
          if (savedData.get(player.getUniqueID()).containsKey(prototype.getMODID()))
             prototype.readFromNBT(savedData.get(player.getUniqueID()).get(prototype.getMODID()));
       }
    }
 
-   public void setPlayerData(EntityPlayer player, PlayerData prototype) {
+   public void setPlayerData(EntityPlayer player, IPlayerData prototype) {
       if (!savedData.containsKey(player.getUniqueID())) {
          savedData.put(player.getUniqueID(), new HashMap<String, NBTTagCompound>());
       }
