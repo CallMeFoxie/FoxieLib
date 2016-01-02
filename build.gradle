@@ -33,7 +33,7 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 version = "${config.minecraft_version}-${config.mod_version}${VersionBuild}"
-group = "foxie.lib"
+group = "foxie"
 archivesBaseName = "FoxieLib"
 
 minecraft {
@@ -46,7 +46,10 @@ minecraft {
 }
 
 repositories {
-
+    maven {
+        name "Foxiehost"
+        url "http://maven.foxiehost.eu"
+    }
 }
 
 dependencies {
