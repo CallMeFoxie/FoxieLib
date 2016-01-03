@@ -1,7 +1,8 @@
 package foxie.lib;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 public class Things {
    public static String getCurrentModId() {

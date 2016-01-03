@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.IChatComponent;
 
 /**
  * Simple inventory implementation for use in Tile Entities, anywhere really
@@ -96,27 +97,15 @@ public class SimpleInventory implements IInventory {
    }
 
    @Override
-   public ItemStack getStackInSlotOnClosing(int slot) {
-      ItemStack items = getStackInSlot(slot);
-      if (items != null)
-         setInventorySlotContents(slot, null);
-
-      return items;
+   public ItemStack removeStackFromSlot(int index) {
+      ItemStack stack = getStackInSlot(index);
+      setInventorySlotContents(index, null);
+      return stack;
    }
 
    @Override
    public void setInventorySlotContents(int slot, ItemStack item) {
       inventory[slot] = item;
-   }
-
-   @Override
-   public String getInventoryName() {
-      return inventoryName;
-   }
-
-   @Override
-   public boolean hasCustomInventoryName() {
-      return !inventoryName.equals("");
    }
 
    @Override
@@ -135,18 +124,38 @@ public class SimpleInventory implements IInventory {
    }
 
    @Override
-   public void openInventory() {
+   public void openInventory(EntityPlayer player) {
 
    }
 
    @Override
-   public void closeInventory() {
+   public void closeInventory(EntityPlayer player) {
 
    }
 
    @Override
    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-      return false;
+      return true;
+   }
+
+   @Override
+   public int getField(int id) {
+      return 0;
+   }
+
+   @Override
+   public void setField(int id, int value) {
+
+   }
+
+   @Override
+   public int getFieldCount() {
+      return 0;
+   }
+
+   @Override
+   public void clear() {
+
    }
 
    public void load(NBTTagCompound nbt) {
@@ -180,5 +189,20 @@ public class SimpleInventory implements IInventory {
          }
       }
       nbt.setTag("Inventory", itemList);
+   }
+
+   @Override
+   public String getName() {
+      return null;
+   }
+
+   @Override
+   public boolean hasCustomName() {
+      return false;
+   }
+
+   @Override
+   public IChatComponent getDisplayName() {
+      return null;
    }
 }

@@ -2,26 +2,28 @@ package foxie.lib;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Support class to make 1.8 update easier :P
  */
-public class BlockPos {
+public class BlockPos extends net.minecraft.util.BlockPos {
    private int x, y, z;
-   private ForgeDirection direction;
+   private EnumFacing direction;
 
    public BlockPos(int x, int y, int z) {
+      super(x, y, z);
       this.x = x;
       this.y = y;
       this.z = z;
-      this.direction = ForgeDirection.UNKNOWN;
+      this.direction = null;
    }
 
-   public BlockPos(int x, int y, int z, ForgeDirection direction) {
+   public BlockPos(int x, int y, int z, EnumFacing direction) {
       this(x, y, z);
       this.direction = direction;
    }
@@ -57,11 +59,11 @@ public class BlockPos {
       this.z = z;
    }
 
-   public ForgeDirection getDirection() {
+   public EnumFacing getDirection() {
       return direction;
    }
 
-   public void setDirection(ForgeDirection direction) {
+   public void setDirection(EnumFacing direction) {
       this.direction = direction;
    }
 
@@ -70,16 +72,16 @@ public class BlockPos {
    }
 
    public BlockPos getRight(int blocks) {
-      if (direction == ForgeDirection.EAST)
+      if (direction == EnumFacing.EAST)
          z += blocks;
 
-      if (direction == ForgeDirection.WEST)
+      if (direction == EnumFacing.WEST)
          z -= blocks;
 
-      if (direction == ForgeDirection.NORTH)
+      if (direction == EnumFacing.NORTH)
          x += blocks;
 
-      if (direction == ForgeDirection.SOUTH)
+      if (direction == EnumFacing.SOUTH)
          x -= blocks;
 
       return this;
@@ -90,16 +92,16 @@ public class BlockPos {
    }
 
    public BlockPos getCloser(int blocks) {
-      if (direction == ForgeDirection.EAST)
+      if (direction == EnumFacing.EAST)
          x -= blocks;
 
-      if (direction == ForgeDirection.WEST)
+      if (direction == EnumFacing.WEST)
          x += blocks;
 
-      if (direction == ForgeDirection.NORTH)
+      if (direction == EnumFacing.NORTH)
          z += blocks;
 
-      if (direction == ForgeDirection.SOUTH)
+      if (direction == EnumFacing.SOUTH)
          z -= blocks;
 
       return this;
@@ -140,15 +142,15 @@ public class BlockPos {
    }
 
    public Block getBlock(World world) {
-      return world.getBlock(x, y, z);
+      return world.getBlockState(this).getBlock();
    }
 
    public TileEntity getTE(World world) {
-      return world.getTileEntity(x, y, z);
+      return world.getTileEntity(this);
    }
 
-   public int getMeta(World world) {
-      return world.getBlockMetadata(x, y, z);
+   public IBlockState getBlockState(World world) {
+      return world.getBlockState(this);
    }
 
    public void writeToNBT(NBTTagCompound compound) {

@@ -1,6 +1,7 @@
 package foxie.lib;
 
-import cpw.mods.fml.common.FMLLog;
+
+import net.minecraftforge.fml.common.FMLLog;
 
 public class FoxLog {
    public static void warning(String msg) {
