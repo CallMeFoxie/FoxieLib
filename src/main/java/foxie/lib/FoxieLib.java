@@ -2,11 +2,16 @@ package foxie.lib;
 
 
 import foxie.lib.proxy.ProxyCommon;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = FoxieLib.MODID, name = FoxieLib.NAME, version = FoxieLib.VERSION)
 public class FoxieLib implements IFoxieMod {
@@ -36,6 +41,20 @@ public class FoxieLib implements IFoxieMod {
    @Mod.EventHandler
    public void postinit(FMLPostInitializationEvent event) {
       proxy.postinit(event);
+   }
+
+   @Mod.EventHandler
+   public void onServerStarted(FMLServerStartedEvent event) {
+      if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+         return;
+
+      World world = MinecraftServer.getServer().worldServers[0];
+
+      FoxieSavedData data = (FoxieSavedData) world.loadItemData(FoxieSavedData.class, MODID);
+      if (data == null) {
+         data = new FoxieSavedData();
+         world.setItemData(MODID, data);
+      }
    }
 
    @Override
