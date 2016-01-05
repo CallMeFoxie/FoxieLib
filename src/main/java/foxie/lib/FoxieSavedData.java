@@ -43,7 +43,7 @@ public class FoxieSavedData extends WorldSavedData {
          NBTTagList listData = playerData.getTagList("data", 10);
          HashMap<String, NBTTagCompound> modsData = new HashMap<String, NBTTagCompound>();
          for (int j = 0; j < listData.tagCount(); j++) {
-            NBTTagCompound modData = list.getCompoundTagAt(j);
+            NBTTagCompound modData = listData.getCompoundTagAt(j);
 
             String modid = modData.getString("modid");
             NBTTagCompound actualData = (NBTTagCompound) modData.getTag("data");
