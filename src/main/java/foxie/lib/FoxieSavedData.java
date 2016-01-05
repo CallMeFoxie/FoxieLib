@@ -97,5 +97,7 @@ public class FoxieSavedData extends WorldSavedData {
       prototype.writeToNBT(data);
 
       savedData.get(player.getUniqueID()).put(prototype.getMODID(), data);
+
+      markDirty();
    }
 }
