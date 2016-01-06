@@ -6,6 +6,9 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class Things {
    public static String getCurrentModId() {
+      if (getCurrentModContainer() == null)
+         return null;
+
       return getCurrentModContainer().getModId();
    }
 
