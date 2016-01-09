@@ -13,7 +13,7 @@ public class FoxLog {
    }
 
    public static void info(String msg) {
-      FMLLog.severe("[" + getModid() + "] " + msg);
+      FMLLog.info("[" + getModid() + "] " + msg);
    }
 
    public static void notAFoxie() {
