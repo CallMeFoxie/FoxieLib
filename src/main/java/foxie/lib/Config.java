@@ -72,9 +72,21 @@ public class Config {
 
          } else if (field.getType() == boolean.class) {
             field.setBoolean(o, property.getBoolean());
+         } else if (field.getType().isArray()) {
+            if (field.getType().getComponentType() == String.class) {
+               property.setDefaultValues((String[]) field.get(o));
+               field.set(o, property.getStringList());
+            } else if (field.getType().getComponentType() == int.class) {
+               property.setDefaultValues((int[]) field.get(o));
+               field.set(o, property.getIntList());
+            } else if (field.getType().getComponentType() == double.class) {
+               property.setDefaultValues((double[]) field.get(o));
+               field.set(o, property.getDoubleList());
+            } else if (field.getType().getComponentType() == boolean.class) {
+               property.setDefaultValues((boolean[]) field.get(o));
+               field.set(o, property.getBooleanList());
+            }
          }
-         // TODO getType == int array
-         // TODO getType == string array
       } catch (IllegalAccessException e) { // please...
       }
 
