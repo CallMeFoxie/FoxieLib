@@ -34,19 +34,17 @@ public class Config {
          String category = cfgOption.category(), key = cfgOption.key(), def = cfgOption.def();
          if (key.equals(""))
             key = field.getName();
-         if (def.equals("")) {
-            def = field.get(o).toString();
-         }
 
          if (category.equals("")) {
             category = o.getName().substring(o.getName().lastIndexOf(".") + 1);
          }
 
-         Property property = cfg.get(category, key, def);
-         property.comment = cfgOption.comment();
+         Property property = null;
 
          // lots of copypaste, sadly Java's annotations are annoying...
          if (field.getType() == int.class) {
+            property = cfg.get(category, key, (Integer) field.get(o));
+
             if (!cfgOption.min().equals(""))
                property.setMinValue(Integer.parseInt(cfgOption.min()));
             if (!cfgOption.max().equals(""))
@@ -55,6 +53,7 @@ public class Config {
             field.setInt(o, property.getInt());
 
          } else if (field.getType() == float.class) {
+            property = cfg.get(category, key, (Float) field.get(o));
             if (!cfgOption.min().equals(""))
                property.setMinValue(Float.parseFloat(cfgOption.min()));
             if (!cfgOption.max().equals(""))
@@ -63,6 +62,7 @@ public class Config {
             field.setFloat(o, (float) property.getDouble());
 
          } else if (field.getType() == double.class) {
+            property = cfg.get(category, key, (Double) field.get(o));
             if (!cfgOption.min().equals(""))
                property.setMinValue(Double.parseDouble(cfgOption.min()));
             if (!cfgOption.max().equals(""))
@@ -71,22 +71,28 @@ public class Config {
             field.setDouble(o, property.getDouble());
 
          } else if (field.getType() == boolean.class) {
+            property = cfg.get(category, key, (Boolean) field.get(o));
             field.setBoolean(o, property.getBoolean());
          } else if (field.getType().isArray()) {
             if (field.getType().getComponentType() == String.class) {
+               property = cfg.get(category, key, (String[]) field.get(o));
                property.setDefaultValues((String[]) field.get(o));
                field.set(o, property.getStringList());
             } else if (field.getType().getComponentType() == int.class) {
-               property.setDefaultValues((int[]) field.get(o));
+               property = cfg.get(category, key, (int[]) field.get(o));
                field.set(o, property.getIntList());
             } else if (field.getType().getComponentType() == double.class) {
-               property.setDefaultValues((double[]) field.get(o));
+               property = cfg.get(category, key, (double[]) field.get(o));
                field.set(o, property.getDoubleList());
             } else if (field.getType().getComponentType() == boolean.class) {
-               property.setDefaultValues((boolean[]) field.get(o));
+               property = cfg.get(category, key, (boolean[]) field.get(o));
                field.set(o, property.getBooleanList());
             }
          }
+
+         if (property != null)
+            property.comment = cfgOption.comment();
+
       } catch (IllegalAccessException e) { // please...
       }
 
