@@ -41,7 +41,7 @@ minecraft {
     runDir = "run"
     mappings = config.mappings
 
-    replaceIn "reference/Reference.java"
+    replaceIn "foxie/lib/FoxieLib.java"
     replace "@VERSION@", "${config.mod_version}"
 
 }
