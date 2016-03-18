@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * Support class to make 1.8 update easier :P
  */
-public class BlockPos extends net.minecraft.util.BlockPos {
+public class BlockPos extends net.minecraft.util.math.BlockPos {
    private int x, y, z;
    private EnumFacing direction;
 
