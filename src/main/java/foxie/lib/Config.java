@@ -91,7 +91,7 @@ public class Config {
          }
 
          if (property != null)
-            property.comment = cfgOption.comment();
+            property.setComment(cfgOption.comment());
 
       } catch (IllegalAccessException e) { // please...
       }
