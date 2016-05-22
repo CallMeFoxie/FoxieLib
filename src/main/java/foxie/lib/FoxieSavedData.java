@@ -55,7 +55,7 @@ public class FoxieSavedData extends WorldSavedData {
    }
 
    @Override
-   public void writeToNBT(NBTTagCompound tag) {
+   public NBTTagCompound writeToNBT(NBTTagCompound tag) {
       NBTTagList list = new NBTTagList();
 
       for (Map.Entry<UUID, HashMap<String, NBTTagCompound>> entry : savedData.entrySet()) {
@@ -78,6 +78,8 @@ public class FoxieSavedData extends WorldSavedData {
       }
 
       tag.setTag("PlayerData", list);
+
+      return tag;
    }
 
    // TODO cache to avoid the need for new() every so often
