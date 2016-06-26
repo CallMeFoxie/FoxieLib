@@ -2,7 +2,6 @@ package foxie.lib;
 
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -14,25 +13,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class Registrator {
-   public static void registerBlock(FoxyBlock block) {
-      GameRegistry.registerBlock(block, block.getModHandler().getModId() + "_" + block.getUnlocalizedName().substring(5));
-      checkForEvents(block);
-   }
-
-   public static void registerItem(FoxyItem item) {
-      GameRegistry.registerItem(item, item.getModHandler().getModId() + "_" + item.getUnlocalizedName().substring(5));
-      checkForEvents(item);
-   }
-
-   public static void registerMultiBlock(FoxyBlock block, Class<? extends ItemBlock> myClass) {
-      GameRegistry.registerBlock(block, myClass, block.getModHandler().getModId() + "_" + block.getUnlocalizedName().substring(5));
-   }
-
-   public static void registerTileEntity(Class<? extends FoxyTileEntity> te, String unlocalizedName) {
-      GameRegistry.registerTileEntity(te, Things.getCurrentModId() + "_" + unlocalizedName);
-      checkForEvents(te);
-   }
-
    public static void registerOreDict(Item item, String oreName) {
       OreDictionary.registerOre(oreName, new ItemStack(item));
    }
