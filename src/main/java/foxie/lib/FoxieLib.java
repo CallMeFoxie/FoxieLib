@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = FoxieLib.MODID, name = FoxieLib.NAME, version = FoxieLib.VERSION)
 public class FoxieLib implements IFoxieMod {
-   public static final String MODID = "FoxieLib";
+   public static final String MODID = "foxielib";
    public static final String NAME = "Foxie Lib";
    public static final String VERSION = "@VERSION@";
 
