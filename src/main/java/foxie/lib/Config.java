@@ -88,6 +88,8 @@ public class Config {
                property = cfg.get(category, key, (boolean[]) field.get(o));
                field.set(o, property.getBooleanList());
             }
+         } else {
+            FoxLog.error("Got an unknown field type in config that I cannot process. \nPlease report this to @CallMeFoxie!");
          }
 
          if (property != null)
