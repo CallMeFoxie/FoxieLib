@@ -47,12 +47,12 @@ public class FoxieLib implements IFoxieMod {
       if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
          return;
 
-      World world = FMLCommonHandler.instance().getMinecraftServerInstance().getServer().worldServers[0];
+      World world = FMLCommonHandler.instance().getMinecraftServerInstance().getServer().worldServerForDimension(0);
 
-      FoxieSavedData data = (FoxieSavedData) world.loadItemData(FoxieSavedData.class, MODID);
+      FoxieSavedData data = (FoxieSavedData) world.loadData(FoxieSavedData.class, MODID);
       if (data == null) {
          data = new FoxieSavedData();
-         world.setItemData(MODID, data);
+         world.setData(MODID, data);
       }
    }
 
