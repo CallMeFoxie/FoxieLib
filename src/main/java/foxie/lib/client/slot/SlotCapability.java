@@ -22,13 +22,12 @@ public class SlotCapability extends Slot {
       handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
    }
 
-   @Nullable
    @Override
    public ItemStack getStack() {
-      if(handler.getStackInSlot(index) != null && handler.getStackInSlot(index).stackSize == 0) {
+      if(!handler.getStackInSlot(index).isEmpty() && handler.getStackInSlot(index).getCount() == 0) {
          // workaround since we cannot insert NULL to reset stacksize when it reaches 0
          ItemStack stack = handler.getStackInSlot(index);
-         stack.stackSize = 1;
+         stack.setCount(1);
          handler.insertItem(index, stack, false);
          handler.extractItem(index, 1, false);
       }
@@ -39,9 +38,9 @@ public class SlotCapability extends Slot {
    @Override
    public void putStack(@Nullable ItemStack stack) {
       if(getStack() != null)
-         handler.extractItem(index, handler.getStackInSlot(index).stackSize, false);
+         handler.extractItem(index, handler.getStackInSlot(index).getCount(), false);
 
-      if(stack != null && stack.stackSize == 0)
+      if(stack != null && stack.getCount() == 0)
          stack = null;
 
       handler.insertItem(index, stack, false);
@@ -65,12 +64,12 @@ public class SlotCapability extends Slot {
       ItemStack returnStack = null;
 
       if (stack != null) {
-         if (stack.stackSize <= amount) {
+         if (stack.getCount() <= amount) {
             returnStack = stack;
             stack = null;
          } else {
             returnStack = stack.splitStack(amount);
-            if (stack.stackSize == 0) {
+            if (stack.getCount() == 0) {
                stack = null;
             }
          }

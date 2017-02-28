@@ -62,7 +62,7 @@ public abstract class SmartContainer extends Container {
    @Override
    public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlot) {
       ItemStack stack = null;
-      Slot slotObject = (Slot) inventorySlots.get(sourceSlot);
+      Slot slotObject = inventorySlots.get(sourceSlot);
 
       if (slotObject != null && slotObject.getHasStack()) {
          ItemStack stackInSlot = slotObject.getStack();
@@ -71,32 +71,32 @@ public abstract class SmartContainer extends Container {
          // items with source in Sacred Slots (c)
          if (sourceSlot < internalSlots && totalSlots > internalSlots) {
             if (!this.mergeItemStack(stackInSlot, internalSlots, totalSlots, true)) {
-               return null;
+               return ItemStack.EMPTY;
             }
          }
          // items with source in user's inventory...
          else {
             int slot = -1;
             for (int i = 0; i < internalSlots; i++) {
-               if (((Slot) inventorySlots.get(i)).isItemValid(stackInSlot)
+               if ((inventorySlots.get(i)).isItemValid(stackInSlot)
                        && this.mergeItemStack(stackInSlot, i, i + 1, false))
                   slot = i;
             }
 
             if (slot == -1)
-               return null;
+               return ItemStack.EMPTY;
          }
 
-         if (stackInSlot.stackSize == 0) {
-            slotObject.putStack(null);
+         if (stackInSlot.getCount() == 0) {
+            slotObject.putStack(ItemStack.EMPTY);
          } else {
             slotObject.onSlotChanged();
          }
 
-         if (stackInSlot.stackSize == stack.stackSize) {
-            return null;
+         if (stackInSlot.getCount() == stack.getCount()) {
+            return ItemStack.EMPTY;
          }
-         slotObject.onPickupFromSlot(player, stackInSlot);
+         slotObject.onTake(player, stackInSlot);
       }
       return stack;
 
@@ -116,21 +116,21 @@ public abstract class SmartContainer extends Container {
       ItemStack itemstack1;
 
       if (stack.isStackable()) {
-         while (stack.stackSize > 0 && (!something && k < maxSlot || something && k >= internalSlots)) {
-            slot = (Slot) this.inventorySlots.get(k);
+         while (stack.getCount() > 0 && (!something && k < maxSlot || something && k >= internalSlots)) {
+            slot = this.inventorySlots.get(k);
             itemstack1 = slot.getStack();
 
-            if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
-               int l = itemstack1.stackSize + stack.stackSize;
+            if (!itemstack1.isEmpty() && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
+               int l = itemstack1.getCount() + stack.getCount();
 
                if (l <= stack.getMaxStackSize()) {
-                  stack.stackSize = 0;
-                  itemstack1.stackSize = l;
+                  stack.setCount(0);
+                  itemstack1.setCount(l);
                   slot.onSlotChanged();
                   flag1 = true;
-               } else if (itemstack1.stackSize < stack.getMaxStackSize()) {
-                  stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
-                  itemstack1.stackSize = stack.getMaxStackSize();
+               } else if (itemstack1.getCount() < stack.getMaxStackSize()) {
+                  stack.setCount(stack.getCount() - (stack.getMaxStackSize() - itemstack1.getCount())); // stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize; #operatorOverloading
+                  itemstack1.setCount(stack.getMaxStackSize());
                   slot.onSlotChanged();
                   flag1 = true;
                }
@@ -144,7 +144,7 @@ public abstract class SmartContainer extends Container {
          }
       }
 
-      if (stack.stackSize > 0) {
+      if (stack.getCount() > 0) {
          if (something) {
             k = maxSlot - 1;
          } else {
@@ -152,13 +152,13 @@ public abstract class SmartContainer extends Container {
          }
 
          while (!something && k < maxSlot || something && k >= internalSlots) {
-            slot = (Slot) this.inventorySlots.get(k);
+            slot = this.inventorySlots.get(k);
             itemstack1 = slot.getStack();
 
-            if (itemstack1 == null && slot.isItemValid(stack)) { // HERE! Mojang, fix is pls?
+            if (itemstack1.isEmpty() && slot.isItemValid(stack)) { // HERE! Mojang, fix is pls?
                slot.putStack(stack.copy());
                slot.onSlotChanged();
-               stack.stackSize = 0;
+               stack.setCount(0);
                flag1 = true;
                break;
             }

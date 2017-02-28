@@ -3,16 +3,19 @@ package foxie.lib;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 /**
  * Simple inventory implementation for use in Tile Entities, anywhere really
  */
 public class SimpleInventory implements IInventory {
-   protected final ItemStack[] inventory;
+   private NonNullList<ItemStack> inventory;
+
+   private int size;
    protected final String inventoryName;
    protected final int inventoryLimit;
    protected Container owner;
@@ -28,7 +31,8 @@ public class SimpleInventory implements IInventory {
    public SimpleInventory(int slots, String inventoryName, int inventoryLimit, Container container) {
       this.inventoryName = inventoryName;
       this.inventoryLimit = inventoryLimit;
-      inventory = new ItemStack[slots];
+      this.size = slots;
+      inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
       this.owner = container;
    }
 
@@ -42,7 +46,8 @@ public class SimpleInventory implements IInventory {
    public SimpleInventory(int slots, String inventoryName, int inventoryLimit) {
       this.inventoryName = inventoryName;
       this.inventoryLimit = inventoryLimit;
-      inventory = new ItemStack[slots];
+      this.size = slots;
+      inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
    }
 
    /**
@@ -53,7 +58,8 @@ public class SimpleInventory implements IInventory {
    public SimpleInventory(int slots) {
       this.inventoryName = "";
       this.inventoryLimit = 64;
-      this.inventory = new ItemStack[slots];
+      this.size = slots;
+      inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
    }
 
    public Container getContainer() {
@@ -66,29 +72,38 @@ public class SimpleInventory implements IInventory {
 
    @Override
    public int getSizeInventory() {
-      return inventory.length;
+      return this.size;
+   }
+
+   @Override
+   public boolean isEmpty() {
+      for (ItemStack stack : inventory) {
+         if (stack != null)
+            return false;
+      }
+      return true;
    }
 
    @Override
    public ItemStack getStackInSlot(int slot) {
-      if (slot >= inventory.length)
+      if (slot >= this.size)
          return null;
 
-      return inventory[slot];
+      return inventory.get(slot);
    }
 
    @Override
    public ItemStack decrStackSize(int slot, int amount) {
       ItemStack stack = null;
 
-      if (inventory[slot] != null) {
-         if (inventory[slot].stackSize <= amount) {
-            stack = inventory[slot];
-            inventory[slot] = null;
+      if (!inventory.get(slot).isEmpty()) {
+         if (inventory.get(slot).getCount() <= amount) {
+            stack = inventory.get(slot);
+            inventory.set(slot, ItemStack.EMPTY);
          } else {
-            stack = inventory[slot].splitStack(amount);
-            if (inventory[slot].stackSize == 0) {
-               inventory[slot] = null;
+            stack = inventory.get(slot).splitStack(amount);
+            if (inventory.get(slot).getCount() == 0) {
+               inventory.set(slot, ItemStack.EMPTY);
             }
          }
       }
@@ -105,7 +120,10 @@ public class SimpleInventory implements IInventory {
 
    @Override
    public void setInventorySlotContents(int slot, ItemStack item) {
-      inventory[slot] = item;
+      if (item == null) // backwards compatible eh?
+         item = ItemStack.EMPTY;
+
+      inventory.set(slot, item);
    }
 
    @Override
@@ -119,7 +137,7 @@ public class SimpleInventory implements IInventory {
    }
 
    @Override
-   public boolean isUseableByPlayer(EntityPlayer player) {
+   public boolean isUsableByPlayer(EntityPlayer player) {
       return true;
    }
 
@@ -159,36 +177,12 @@ public class SimpleInventory implements IInventory {
    }
 
    public void load(NBTTagCompound nbt) {
-      NBTTagList list = nbt.getTagList("Inventory", 10);
-      for (int i = 0; i < list.tagCount(); i++) {
-         NBTTagCompound tag = list.getCompoundTagAt(i);
-         byte slot = tag.getByte("Slot");
-         if (slot >= 0 && slot < inventory.length) {
-            if (tag.getBoolean("Empty"))
-               inventory[slot] = null;
-            else
-               inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
-         }
-      }
+      inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+      ItemStackHelper.loadAllItems(nbt.getCompoundTag("Inventory"), inventory);
    }
 
    public void save(NBTTagCompound nbt) {
-      NBTTagList itemList = new NBTTagList();
-      for (int i = 0; i < inventory.length; i++) {
-         ItemStack stack = inventory[i];
-         if (stack != null) {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setByte("Slot", (byte) i);
-            stack.writeToNBT(tag);
-            itemList.appendTag(tag);
-         } else {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setByte("Slot", (byte) i);
-            tag.setBoolean("Empty", true);
-            itemList.appendTag(tag);
-         }
-      }
-      nbt.setTag("Inventory", itemList);
+      nbt.setTag("Inventory", ItemStackHelper.saveAllItems(new NBTTagCompound(), inventory));
    }
 
    @Override

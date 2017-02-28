@@ -16,7 +16,7 @@ public class ChancedStack {
     *               following float is added to its chance to drop
     */
    public ChancedStack(Object... params) {
-      chancedStacks = new ArrayList<ChancedDropStack>();
+      chancedStacks = new ArrayList<>();
 
       ChancedDropStack stack = null;
 
@@ -56,7 +56,7 @@ public class ChancedStack {
     * @return itemstacks to drop/give out/dispense
     */
    public ItemStack[] getDrops(Random random) {
-      List<ItemStack> drops = new ArrayList<ItemStack>();
+      List<ItemStack> drops = new ArrayList<>();
 
       for (ChancedDropStack chancedStack : chancedStacks) {
          int tmpDrops = 0;
@@ -71,7 +71,7 @@ public class ChancedStack {
          // if any drops are to happen
          if (tmpDrops > 0) {
             ItemStack toAdd = chancedStack.itemStack.copy(); // copy the stack
-            toAdd.stackSize = tmpDrops; // set the new stacksize
+            toAdd.setCount(tmpDrops); // set the new stacksize
             drops.add(toAdd);
          }
       }
@@ -85,7 +85,7 @@ public class ChancedStack {
       public List<Float> chances;
 
       public ChancedDropStack() {
-         chances = new ArrayList<Float>();
+         chances = new ArrayList<>();
       }
    }
 }

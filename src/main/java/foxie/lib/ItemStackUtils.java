@@ -7,7 +7,7 @@ public class ItemStackUtils {
         if (a == null || b == null)
             return true;
 
-        if (a.isItemEqual(b) && a.getMaxStackSize() >= a.stackSize + b.stackSize)
+        if (a.isItemEqual(b) && a.getMaxStackSize() >= a.getCount() + b.getCount())
             return true;
 
         return false;
@@ -21,7 +21,7 @@ public class ItemStackUtils {
         else if (a == null && b == null)
             return null;
 
-        a.stackSize += b.stackSize;
+        a.setCount(a.getCount() + b.getCount());
         return a;
     }
 }
