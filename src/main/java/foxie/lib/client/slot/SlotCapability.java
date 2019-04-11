@@ -82,7 +82,7 @@ public class SlotCapability extends Slot {
 
    @Override
    public boolean isHere(IInventory inv, int slotIn) {
-      return false; // TODO better fix? We do not have IInventory anymore
+      return super.isHere(inv, slotIn);
    }
 
    @Override
