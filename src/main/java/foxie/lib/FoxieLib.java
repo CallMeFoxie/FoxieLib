@@ -1,8 +1,8 @@
 package foxie.lib;
 
-
 import foxie.lib.proxy.ProxyCommon;
-import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class FoxieLib implements IFoxieMod {
    public static final String MODID = "foxielib";
    public static final String NAME = "Foxie Lib";
-   public static final String VERSION = "@VERSION@";
+   public static final String VERSION = "1.12.2-1.1.0";
 
    @SidedProxy(clientSide = "foxie.lib.proxy.ProxyClient", serverSide = "foxie.lib.proxy.ProxyCommon", modId = MODID)
    public static ProxyCommon proxy;
@@ -47,7 +47,7 @@ public class FoxieLib implements IFoxieMod {
       if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
          return;
 
-      World world = FMLCommonHandler.instance().getMinecraftServerInstance().getServer().worldServerForDimension(0);
+      WorldServer world = DimensionManager.getWorld(0);
 
       FoxieSavedData data = (FoxieSavedData) world.loadData(FoxieSavedData.class, MODID);
       if (data == null) {
